@@ -73,7 +73,7 @@ public static SeckenApi api = new SeckenApi(APP_ID, APP_KEY);
 ## 获取二维码内容并发起验证事件（Get YangAuth QrCode）
 ```
 // 获得验证二维码地址及数据
-SeckenQr thisSeckenQrResult = api.getAuth();
+SeckenQr thisSeckenQrResult = api.getAuth(AuthType.CLICK);
 // 打印输出
 System.out.println(thisSeckenQrResult.toString());
 ```
@@ -93,9 +93,9 @@ GetYangAuthQrCode接口包含一个必传参数，AuthType。
 ## 查询验证事件的结果（Check YangAuth Result）
 ```
 // 事件ID
-String thisRequestEventId = "";
+String thisEventId = "";
 // 事件请求类
-SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisRequestEventId);
+SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisEventId);
 // 等待成功返回结果
 SeckenId thisCheckYcAuthResult = waitResult(thisSeckenReqEvent);
 // 打印输出
@@ -113,7 +113,7 @@ public static SeckenId waitResult(SeckenReqEvent event)
         }
     }
 ```
-CheckYangAuthResult接口包含一个必传参数，RequestEventId。
+CheckYangAuthResult接口包含一个必传参数，EventId。
 
 |    状态码   | 		状态详情 		  |
 |:----------:|:-----------------:|
@@ -135,9 +135,9 @@ CheckYangAuthResult接口包含一个必传参数，RequestEventId。
 // 用户ID
 String thisUid = "";
 // 请求类
-SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisUid);
+SeckenReqId thisSeckenReqId = new SeckenReqId(thisUid);
 // 一键推送验证
-SeckenEvent thisAskYcAuthPushResult = api.realtimeAuth(ActionType.OTHER,AuthType.CLICK,thisSeckenReqEvent);
+SeckenEvent thisAskYcAuthPushResult = api.realtimeAuth(ActionType.OTHER,AuthType.CLICK,thisSeckenReqId);
 // 打印输出
 System.out.println(thisAskYcAuthPushResult.toString());
 ```
@@ -161,9 +161,9 @@ String thisOtpCode = "";
 // 用户ID
 String thisUid = "";
 // 请求类
-SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisUid);
+SeckenReqId thisSeckenReqId = new SeckenReqId(thisUid);
 // 离线验证
-Boolean thisOfflineAuthResult = api.offlineAuth(thisSeckenReqEvent, thisOtpCode);
+Boolean thisOfflineAuthResult = api.offlineAuth(thisSeckenReqId, thisOtpCode);
 // 打印输出
 System.out.println(thisOfflineAuthResult.toString());
 ```
