@@ -30,9 +30,10 @@ QQ群：475510094
 项目地址：https://github.com/secken/secken-dotnet
 
 洋葱公有云服务端SDK主要包含三个方法：
-* 获取二维码的方法（GetYangAuthQrCode），用于获取二维码内容和实现绑定。
-* 请求推送验证的方法（AskYangAuthPush），用于发起对用户的推送验证操作。
-* 查询事件结果的方法（CheckYangAuthResult），用于查询二维码登录或者推送验证的结果。
+* 获取二维码的方法（getBinding），用于获取二维码内容和实现绑定。
+* 获取二维码的方法（getAuth），用于获取二维码内容实现验证。
+* 请求推送验证的方法（realtimeAuth），用于发起对用户的推送验证操作。
+* 查询事件结果的方法（getResult），用于查询二维码登录或者推送验证的结果。
 
 ## 安装使用（Install & Get Started）
 
@@ -67,7 +68,7 @@ public static final String APP_KEY = "";
 
 ```
 
-## 获取二维码内容并发起验证事件（Get YangAuth QrCode）
+## 获取二维码内容并发起验证事件（Get Auth）
 ```
 // 获得验证二维码地址及数据
 qr = api.getAuth();
@@ -108,7 +109,7 @@ CheckYangAuthResult接口包含两个必传参数，RequestServerAuthKey，Reque
 |  606       |       callback已被设置                |
 |  609       |       ip地址被禁                |
 
-## 发起推送验证事件（Ask YangAuth Push）
+## 发起推送验证事件（Realtime Auth）
 ```
 // 一键推送验证
 // SeckenReqId 可以从
@@ -117,7 +118,7 @@ CheckYangAuthResult接口包含两个必传参数，RequestServerAuthKey，Reque
 event = api.realtimeAuth(ActionType.LOGIN, AuthType.FACE,id.getUid());
 System.out.println(event.toString());
 ```
-AskYangAuthPush接口包含四个必传参数：RequestServerAuthKey、AuthType、UserId、ActionType；两个可选参数：UserName、UserIpAddress。  
+Realtime Auth接口包含四个必传参数：AuthType、Uid、ActionType；两个可选参数：UserName、UserIpAddress。  
 
 |    状态码   | 		状态详情 		  |
 |:----------:|:-----------------:|
@@ -130,7 +131,7 @@ AskYangAuthPush接口包含四个必传参数：RequestServerAuthKey、AuthType�
 |  608       |       验证token不存在           |
 |  609       |       ip地址被禁                |
 
-
+```java
     public static void main(String[] args) throws SeckenParamException,
             SeckenSignatureVerifyException, InterruptedException,
             UnsupportedEncodingException {
