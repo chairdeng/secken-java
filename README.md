@@ -163,9 +163,9 @@ String thisUid = "";
 // 请求类
 SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisUid);
 // 离线验证
-var offlineResult = api.offlineAuth(thisSeckenReqEvent, thisAuthCode);
+Boolean thisOfflineAuthResult = api.offlineAuth(thisSeckenReqEvent, thisAuthCode);
 // 打印输出
-System.out.println(offlineResult.toString());
+System.out.println(thisOfflineAuthResult.toString());
 ```
 HandleOfflineAuthorization接口包含两个必传参数：UserId、AuthCode；
 
