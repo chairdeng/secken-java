@@ -27,30 +27,8 @@ QQ群：475510094
 
 帮助文档：https://www.yangcong.com/help
 
-项目地址：https://github.com/secken/secken-dotnet
+项目地址：https://github.com/secken/secken-java
 
-洋葱公有云服务端SDK主要包含三个方法：
-* 获取二维码的方法（getBinding），用于获取二维码内容和实现绑定。
-* 获取二维码的方法（getAuth），用于获取二维码内容实现验证。
-* 请求推送验证的方法（realtimeAuth），用于发起对用户的推送验证操作。
-* 查询事件结果的方法（getResult），用于查询二维码登录或者推送验证的结果。
-
-## 安装使用（Install & Get Started）
-
-To install Secken Public Cloud Server SDK For Java, import secken namespaces
-
-```
-import secken.entry.response.SeckenEvent;
-import secken.entry.response.SeckenId;
-import secken.entry.response.SeckenQr;
-import secken.exceptions.SeckenParamException;
-import secken.exceptions.SeckenSignatureVerifyException;
-import secken.SeckenApi;
-import secken.entry.request.SeckenReqEvent;
-import secken.entry.request.SeckenReqId;
-import secken.enums.ActionType;
-import secken.enums.AuthType;
-```
 ## 更新发布（Update & Release Notes）
 
 ```
@@ -58,95 +36,59 @@ import secken.enums.AuthType;
 1、完成了接口封装。
 ```
 
-## 要求和配置（Require & Config）
-```
-// 需要去洋葱开发者中心新建一个类型为公有云的应用，创建完成之后，将对应的AppId+AppKey填过来
-
-public static SeckenApi api = null;
-public static final String APP_ID = "";
-public static final String APP_KEY = "";
-
-```
-
-## 获取二维码内容并发起验证事件（Get Auth）
-```
-// 获得验证二维码地址及数据
-qr = api.getAuth();
-System.out.println(qr.toString());
-```
-
-GetYangAuthQrCode接口包含两个必传参数，RequestServerAuthKey，AuthType。
-
-|    状态码   | 		状态详情 		  |
-|:----------:|:-----------------:|
-|  200       |       成功         |
-|  400       |       上传参数错误  |
-|  403       |       签名错误                |
-|  404       |       应用不存在                |
-|  407       |       请求超时                |
-|  500       |       系统错误                |
-|  609       |       ip地址被禁                |
-
-## 查询验证事件的结果（Check YangAuth Result）
-```
-// 等待成功返回结果
-id = waitResult(api, qr.getEvent());
-```
-CheckYangAuthResult接口包含两个必传参数，RequestServerAuthKey，RequestEventId。
-
-|    状态码   | 		状态详情 		  |
-|:----------:|:-----------------:|
-|  200       |       成功         |
-|  201       |       事件已被处理                |
-|  400       |       上传参数错误  |
-|  403       |       签名错误                |
-|  404       |       应用不存在                |
-|  407       |       请求超时                |
-|  500       |       系统错误                |
-|  601       |       用户拒绝                |
-|  602       |       用户还未操作                |
-|  604       |       事件不存在                |
-|  606       |       callback已被设置                |
-|  609       |       ip地址被禁                |
-
-## 发起推送验证事件（Realtime Auth）
-```
-// 一键推送验证
-// SeckenReqId 可以从
-// id.getUid() 获取 或者
-// new SeckenReqId("uid")
-event = api.realtimeAuth(ActionType.LOGIN, AuthType.FACE,id.getUid());
-System.out.println(event.toString());
-```
-Realtime Auth接口包含四个必传参数：AuthType、Uid、ActionType；两个可选参数：UserName、UserIpAddress。  
-
-|    状态码   | 		状态详情 		  |
-|:----------:|:-----------------:|
-|  200       |       成功         |
-|  400       |       上传参数错误  |
-|  403       |       签名错误                |
-|  404       |       应用不存在                |
-|  407       |       请求超时                |
-|  500       |       系统错误                |
-|  608       |       验证token不存在           |
-|  609       |       ip地址被禁                |
+## Demo:
 
 ```java
+import java.io.UnsupportedEncodingException;
+
+import secken.SeckenApi;
+import secken.entry.request.SeckenReqEvent;
+import secken.entry.request.SeckenReqId;
+import secken.entry.response.SeckenEvent;
+import secken.entry.response.SeckenId;
+import secken.entry.response.SeckenQr;
+import secken.entry.response.SeckenSignature;
+import secken.enums.ActionType;
+import secken.enums.AuthType;
+import secken.exceptions.SeckenParamException;
+import secken.exceptions.SeckenSignatureVerifyException;
+
+public class SeckenSDKTest {
+
+    public static SeckenApi api = null;
+    // app_id app_key 可到洋葱官网申请公有云应用
+    public static final String APP_ID = "";
+    public static final String APP_KEY = "";
+
+    public static SeckenId waitResult(SeckenReqEvent event)
+            throws InterruptedException, SeckenSignatureVerifyException {
+        while (true) {
+            SeckenId resp = (SeckenId) api.getResult(event);
+            System.out.println(resp.toString());
+            Thread.sleep(5000);
+            if (resp.getStatus() == 200) {
+                return resp;
+            }
+        }
+    }
+
     public static void main(String[] args) throws SeckenParamException,
             SeckenSignatureVerifyException, InterruptedException,
             UnsupportedEncodingException {
+        
         api = new SeckenApi(APP_ID, APP_KEY);
 
         SeckenQr qr = null;
         SeckenId id = null;
         SeckenEvent event = null;
 
-        // 获取绑定二维码地址及数据
+        // 获得验证二维码地址和绑定
         qr = api.getBinding();
         System.out.println(qr.toString());
         // 等待成功返回结果
         id = waitResult(qr.getEvent());
 
+        
         // 获得验证二维码地址及数据
         qr = api.getAuth();
         System.out.println(qr.toString());
@@ -154,18 +96,30 @@ Realtime Auth接口包含四个必传参数：AuthType、Uid、ActionType；两�
         id = waitResult(qr.getEvent());
 
         // 一键推送验证
-        // SeckenReqId 可以从
+        // args 1: ActionType 动作类型包含
+        //                          登陆
+        //                          请求
+        //                          支付
+        //                          其他
+        // args 2: AuthType 类型包含
+        //                     手势
+        //                     点击
+        //                     声纹
+        //                     人脸
+        // args 3: SeckenReqId 可以从
         //      id.getUid() 获取 或者
         //      new SeckenReqId("uid")
         event = api.realtimeAuth(
-                ActionType.LOGIN, 
-                AuthType.FACE,
-                id.getUid());
-        
+                ActionType.OTHER,
+                AuthType.CLICK,
+                new SeckenReqId(""));
         System.out.println(event.toString());
         id = waitResult(event.getEvent());
-
-        // 洋葱离线认证接口
-        api.offlineAuth(new SeckenReqId(""), 0);
+        
+        // args 1: 洋葱id
+        // args 2: 洋葱6位数字
+        api.offlineAuth(new SeckenReqId(""), 123456);
     }
+}
 ```
+
