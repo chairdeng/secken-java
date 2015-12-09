@@ -95,9 +95,9 @@ GetYangAuthQrCode接口包含一个必传参数，AuthType。
 // 事件ID
 String requestEventId = "";
 // 事件请求类
-SeckenReqEvent thisSeckenReqId = new SeckenReqEvent(requestEventId);
+SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(requestEventId);
 // 等待成功返回结果
-SeckenId id = waitResult(qr.getEvent());
+SeckenId id = waitResult(thisSeckenReqEvent);
 // 打印输出
 System.out.println(id.toString());
 
