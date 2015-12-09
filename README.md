@@ -73,9 +73,9 @@ public static SeckenApi api = new SeckenApi(APP_ID, APP_KEY);
 ## 获取二维码内容并发起验证事件（Get YangAuth QrCode）
 ```
 // 获得验证二维码地址及数据
-SeckenQr qr = api.getAuth();
+SeckenQr thisSeckenQrResult = api.getAuth();
 // 打印输出
-System.out.println(qr.toString());
+System.out.println(thisSeckenQrResult.toString());
 ```
 
 GetYangAuthQrCode接口包含一个必传参数，AuthType。
@@ -97,9 +97,9 @@ String requestEventId = "";
 // 事件请求类
 SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(requestEventId);
 // 等待成功返回结果
-SeckenId id = waitResult(thisSeckenReqEvent);
+SeckenId thisCheckYcAuthResult = waitResult(thisSeckenReqEvent);
 // 打印输出
-System.out.println(id.toString());
+System.out.println(thisCheckYcAuthResult.toString());
 
 public static SeckenId waitResult(SeckenReqEvent event)
             throws InterruptedException, SeckenSignatureVerifyException {
@@ -135,11 +135,11 @@ CheckYangAuthResult接口包含一个必传参数，RequestEventId。
 // 用户ID
 String thisUid = "";
 // 请求类
-SeckenReqEvent thisSeckenReqId = new SeckenReqEvent(thisUid);
+SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisUid);
 // 一键推送验证
-SeckenEvent event = api.realtimeAuth(ActionType.OTHER,AuthType.CLICK,thisSeckenReqId);
+SeckenEvent thisAskYcAuthPushResult = api.realtimeAuth(ActionType.OTHER,AuthType.CLICK,thisSeckenReqEvent);
 // 打印输出
-System.out.println(event.toString());
+System.out.println(thisAskYcAuthPushResult.toString());
 ```
 AskYangAuthPush接口包含三个必传参数：AuthType、UserId、ActionType；两个可选参数：UserName、UserIpAddress。  
 
@@ -161,9 +161,9 @@ String thisAuthCode = "";
 // 用户ID
 String thisUid = "";
 // 请求类
-SeckenReqEvent thisSeckenReqId = new SeckenReqEvent(thisUid);
-// 一键推送验证
-var offlineResult = api.offlineAuth(thisSeckenReqId, thisAuthCode);
+SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisUid);
+// 离线验证
+var offlineResult = api.offlineAuth(thisSeckenReqEvent, thisAuthCode);
 // 打印输出
 System.out.println(offlineResult.toString());
 ```
