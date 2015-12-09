@@ -93,9 +93,9 @@ GetYangAuthQrCode接口包含一个必传参数，AuthType。
 ## 查询验证事件的结果（Check YangAuth Result）
 ```
 // 事件ID
-String requestEventId = "";
+String thisRequestEventId = "";
 // 事件请求类
-SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(requestEventId);
+SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisRequestEventId);
 // 等待成功返回结果
 SeckenId thisCheckYcAuthResult = waitResult(thisSeckenReqEvent);
 // 打印输出
@@ -157,17 +157,17 @@ AskYangAuthPush接口包含三个必传参数：AuthType、UserId、ActionType�
 ## 处理离线验证请求（Handle Offline Authorization）
 ```
 // 动态验证码
-String thisAuthCode = "";
+String thisOtpCode = "";
 // 用户ID
 String thisUid = "";
 // 请求类
 SeckenReqEvent thisSeckenReqEvent = new SeckenReqEvent(thisUid);
 // 离线验证
-Boolean thisOfflineAuthResult = api.offlineAuth(thisSeckenReqEvent, thisAuthCode);
+Boolean thisOfflineAuthResult = api.offlineAuth(thisSeckenReqEvent, thisOtpCode);
 // 打印输出
 System.out.println(thisOfflineAuthResult.toString());
 ```
-HandleOfflineAuthorization接口包含两个必传参数：UserId、AuthCode；
+HandleOfflineAuthorization接口包含两个必传参数：UserId、OtpCode；
 
 |    状态码   | 		状态详情 		  |
 |:----------:|:-----------------:|
