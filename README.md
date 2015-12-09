@@ -93,9 +93,9 @@ GetYangAuthQrCode接口包含一个必传参数，AuthType。
 ## 查询验证事件的结果（Check YangAuth Result）
 ```
 // 事件ID
-var requestEventId = "";
+String requestEventId = "";
 // 事件请求类
-var thisSeckenReqId = new SeckenReqId(requestEventId);
+SeckenReqEvent thisSeckenReqId = new SeckenReqEvent(requestEventId);
 // 等待成功返回结果
 SeckenId id = waitResult(qr.getEvent());
 // 打印输出
@@ -133,9 +133,9 @@ CheckYangAuthResult接口包含一个必传参数，RequestEventId。
 ## 发起推送验证事件（Ask YangAuth Push）
 ```
 // 用户ID
-var thisUid = "";
+String thisUid = "";
 // 请求类
-var thisSeckenReqId = new SeckenReqId(thisUid);
+SeckenReqEvent thisSeckenReqId = new SeckenReqEvent(thisUid);
 // 一键推送验证
 SeckenEvent event = api.realtimeAuth(ActionType.OTHER,AuthType.CLICK,thisSeckenReqId);
 // 打印输出
@@ -157,11 +157,11 @@ AskYangAuthPush接口包含三个必传参数：AuthType、UserId、ActionType�
 ## 处理离线验证请求（Handle Offline Authorization）
 ```
 // 动态验证码
-var thisAuthCode = "";
+String thisAuthCode = "";
 // 用户ID
-var thisUid = "";
+String thisUid = "";
 // 请求类
-var thisSeckenReqId = new SeckenReqId(thisUid);
+SeckenReqEvent thisSeckenReqId = new SeckenReqEvent(thisUid);
 // 一键推送验证
 var offlineResult = api.offlineAuth(thisSeckenReqId, thisAuthCode);
 // 打印输出
